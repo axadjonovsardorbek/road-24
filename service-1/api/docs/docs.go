@@ -392,6 +392,9 @@ const docTemplate = `{
                 "last_name": {
                     "type": "string"
                 },
+                "password": {
+                    "type": "string"
+                },
                 "role": {
                     "type": "string"
                 },

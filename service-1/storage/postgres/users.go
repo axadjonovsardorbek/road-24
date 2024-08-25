@@ -28,16 +28,6 @@ func NewUsersRepo(db *sql.DB, rdb *redis.Client) *UsersRepo {
 	return &UsersRepo{db: db, rdb: rdb}
 }
 
-// id UUID PRIMARY KEY,
-// first_name VARCHAR(128) NOT NULL,
-// last_name VARCHAR(64) NOT NULL,
-// username VARCHAR(64) NOT NULL,
-// password VARCHAR(255) NOT NULL,
-// role roles NOT NULL,
-// is_admin is_admin_enum NOT NULL DEFAULT 'false',
-// created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-// updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-// deleted_at BIGINT DEFAULT 0
 func (u *UsersRepo) Register(req *ap.UserCreateReq) (*ap.Void, error) {
 	id := uuid.New().String()
 
@@ -131,7 +121,8 @@ func (u *UsersRepo) Profile(req *ap.ById) (*ap.UserRes, error) {
 		last_name,
 		username,
 		role,
-		is_admin
+		is_admin,
+		password
 	FROM 	
 		users
 	WHERE
@@ -148,6 +139,7 @@ func (u *UsersRepo) Profile(req *ap.ById) (*ap.UserRes, error) {
 			&user.Username,
 			&user.Role,
 			&user.IsAdmin,
+			&user.Password,
 		)
 
 		if err != nil {
@@ -227,7 +219,8 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 		last_name,
 		username,
 		role,
-		is_admin
+		is_admin,
+		password
 	FROM 	
 		users
 	WHERE
@@ -276,6 +269,7 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 			&user.Username,
 			&user.Role,
 			&user.IsAdmin,
+			&user.Password,
 		)
 
 		if err != nil {

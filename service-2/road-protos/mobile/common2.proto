@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "genproto/mobile";
+
+package mobile;
+
+message Void{}
+
+message ById{
+    string id = 1;
+}
+
+message Filter{
+    int32 page = 1;
+}

@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+option go_package = "genproto/mobile";
+
+package mobile;
+
+import "common2.proto";
+
+service CarService{
+    rpc Create(CarCreateReq) returns(Void);
+    rpc GetById(ById) returns(CarGetByIdRes);
+    rpc GetAll(CarGetAllReq) returns(CarGetAllRes);
+    rpc Update(CarUpdateReq) returns(Void);
+    rpc Delete(ById) returns(Void);
+}
+
+
+message CarRes{
+    string id = 1;
+    string user_id = 2;
+    string provider_id = 3;
+    string service_id = 4;
+    string status = 5;
+    string scheduled_time = 6;
+    string location = 7;
+    int64 total_price = 8;
+}
+
+message CarCreateReq{
+    string user_id = 1;
+    string provider_id = 2;
+    string service_id = 3;
+    string status = 4;
+    string scheduled_time = 5;
+    string location = 6;
+    int64 total_price = 7;
+}
+
+message CarGetByIdRes{
+    CarRes car = 1;
+}
+
+message CarGetAllRes{
+    repeated CarRes cars = 1;
+}
+
+message CarUpdateReq{
+    string id = 1;
+    string status = 2;
+}
+
+message CarGetAllReq{
+    string user_id = 1;
+    string provider_id = 2;
+    Filter filter = 3;
+}
