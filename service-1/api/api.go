@@ -20,7 +20,7 @@ func NewApi(h *handler.Handler) *gin.Engine {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://3.68.216.185:8040", "http://localhost:3600"},
+		AllowOrigins:     true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
