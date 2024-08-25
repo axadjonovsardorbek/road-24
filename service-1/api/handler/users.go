@@ -157,21 +157,21 @@ func (h *Handler) GetAllUsers(c *gin.Context) {
 	role := claims.(jwt.MapClaims)["role"].(string)
 	is_admin := claims.(jwt.MapClaims)["is_admin"].(string)
 
-	if role != "superadmin" || is_admin != "true"{
+	if role != "superadmin" && is_admin != "true"{
 		c.JSON(http.StatusForbidden, gin.H{"error": "This page forbidden for you"})
 		return
 	}
 
-	// var userRole string
+	var userRole string
 
-	// if role == "superadmin" {
-	// 	userRole = c.Query("role")
-	// } else {
-	// 	userRole = role
-	// }
+	if role == "superadmin" {
+		userRole = c.Query("role")
+	} else {
+		userRole = role
+	}
 
 	req := ap.GetAllUsersReq{
-		Role: c.Query("role"),
+		Role: userRole,
 	}
 
 	pageStr := c.Query("page")
