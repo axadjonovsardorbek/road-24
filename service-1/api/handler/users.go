@@ -35,7 +35,7 @@ func (h *Handler) Register(c *gin.Context) {
 	role := claims.(jwt.MapClaims)["role"].(string)
 	is_admin := claims.(jwt.MapClaims)["is_admin"].(string)
 
-	if role != "superadmin" || is_admin != "true"{
+	if role != "superadmin" && is_admin != "true"{
 		c.JSON(http.StatusForbidden, gin.H{"error": "This page forbidden for you"})
 		return
 	}
@@ -45,6 +45,10 @@ func (h *Handler) Register(c *gin.Context) {
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	if role != "superadmin"{
+		req.Role = role
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)

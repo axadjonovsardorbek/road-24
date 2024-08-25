@@ -280,7 +280,7 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 		users.Users = append(users.Users, &user)
 	}
 
-	log.Println("Successfully fetched all orders")
+	log.Println("Successfully fetched all users")
 
 	return &users, nil
 }
