@@ -15,7 +15,7 @@ func JWTMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		valid, err := token.ValidateToken(authHeader)
+		valid, err := token.ValidateToken(authHeader, "Bearer ")
 		if err != nil || !valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token", "details": err.Error()})
 			c.Abort()
