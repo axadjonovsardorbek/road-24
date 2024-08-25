@@ -14,26 +14,28 @@ service CarService{
     rpc Delete(ById) returns(Void);
 }
 
-
+// Mashinalar { turi, modeli, rangi, yili, kuzov_raqami, dvigatel raqami, ot_kuchi, davlat_raqami(tartib bo’yicha yoki auksion), xodim_id }
 message CarRes{
     string id = 1;
-    string user_id = 2;
-    string provider_id = 3;
-    string service_id = 4;
-    string status = 5;
-    string scheduled_time = 6;
-    string location = 7;
-    int64 total_price = 8;
+    string staf_id = 2;
+    string type_id = 3;
+    string color = 4;
+    string year = 5;
+    string body_number = 6;
+    string horse_power = 7;
+    string number = 8;
+    string technical_passport = 9;
 }
 
 message CarCreateReq{
-    string user_id = 1;
-    string provider_id = 2;
-    string service_id = 3;
-    string status = 4;
-    string scheduled_time = 5;
-    string location = 6;
-    int64 total_price = 7;
+    string staf_id = 1;
+    string type_id = 2;
+    string color = 3;
+    string year = 4;
+    string body_number = 5;
+    string horse_power = 6;
+    string number = 7;
+    string technical_passport = 8;
 }
 
 message CarGetByIdRes{
@@ -42,11 +44,6 @@ message CarGetByIdRes{
 
 message CarGetAllRes{
     repeated CarRes cars = 1;
-}
-
-message CarUpdateReq{
-    string id = 1;
-    string status = 2;
 }
 
 message CarGetAllReq{

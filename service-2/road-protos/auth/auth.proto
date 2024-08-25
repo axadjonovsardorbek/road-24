@@ -21,7 +21,6 @@ message UserRes{
     string username = 4;
     string role = 5;
     string is_admin = 6;
-    string password = 7;
 }
 
 message UserCreateReq{
