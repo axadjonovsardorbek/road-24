@@ -21,14 +21,15 @@ import (
 func NewApi(h *handler.Handler) *gin.Engine {
 	router := gin.Default()
 
-	// router.Use(cors.New(cors.Config{
-	// 	AllowOrigins:     true,
-	// 	AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-	// 	AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-	// 	ExposeHeaders:    []string{"Content-Length"},
-	// 	AllowCredentials: true,
-	// }))
-	router.Use(CORSMiddleware())
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
+	// router.Use(CORSMiddleware())
 
 	router.GET("/api/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.POST("/login", h.Login)
