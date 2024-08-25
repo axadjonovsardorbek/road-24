@@ -10,32 +10,34 @@ service CarService{
     rpc Create(CarCreateReq) returns(Void);
     rpc GetById(ById) returns(CarGetByIdRes);
     rpc GetAll(CarGetAllReq) returns(CarGetAllRes);
-    rpc Update(CarUpdateReq) returns(Void);
     rpc Delete(ById) returns(Void);
 }
 
-// Mashinalar { turi, modeli, rangi, yili, kuzov_raqami, dvigatel raqami, ot_kuchi, davlat_raqami(tartib bo’yicha yoki auksion), xodim_id }
 message CarRes{
     string id = 1;
     string staf_id = 2;
-    string type_id = 3;
+    string type = 3;
     string color = 4;
     string year = 5;
     string body_number = 6;
     string horse_power = 7;
     string number = 8;
     string technical_passport = 9;
+    string model = 10;
+    string image_url = 11;
 }
 
 message CarCreateReq{
     string staf_id = 1;
-    string type_id = 2;
+    string type = 2;
     string color = 3;
     string year = 4;
     string body_number = 5;
     string horse_power = 6;
     string number = 7;
     string technical_passport = 8;
+    string model = 9;
+    string image_url = 10;
 }
 
 message CarGetByIdRes{
@@ -47,7 +49,8 @@ message CarGetAllRes{
 }
 
 message CarGetAllReq{
-    string user_id = 1;
-    string provider_id = 2;
-    Filter filter = 3;
+    string type = 1;
+    string model = 2;
+    string year = 3;
+    Filter filter = 4;
 }

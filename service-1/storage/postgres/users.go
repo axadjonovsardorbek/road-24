@@ -121,7 +121,8 @@ func (u *UsersRepo) Profile(req *ap.ById) (*ap.UserRes, error) {
 		last_name,
 		username,
 		role,
-		is_admin
+		is_admin,
+		password
 	FROM 	
 		users
 	WHERE
@@ -138,6 +139,7 @@ func (u *UsersRepo) Profile(req *ap.ById) (*ap.UserRes, error) {
 			&user.Username,
 			&user.Role,
 			&user.IsAdmin,
+			&user.Password,
 		)
 
 		if err != nil {
@@ -217,7 +219,8 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 		last_name,
 		username,
 		role,
-		is_admin
+		is_admin,
+		password
 	FROM 	
 		users
 	WHERE
@@ -266,6 +269,7 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 			&user.Username,
 			&user.Role,
 			&user.IsAdmin,
+			&user.Password,
 		)
 
 		if err != nil {
