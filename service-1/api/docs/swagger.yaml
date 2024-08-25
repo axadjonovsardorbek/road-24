@@ -1,0 +1,254 @@
+definitions:
+  auth.GetAllUsersRes:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/auth.UserRes'
+        type: array
+    type: object
+  auth.TokenRes:
+    properties:
+      exp_at:
+        type: string
+      token:
+        type: string
+    type: object
+  auth.UserCreateReq:
+    properties:
+      first_name:
+        type: string
+      is_admin:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  auth.UserLoginReq:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  auth.UserRes:
+    properties:
+      first_name:
+        type: string
+      id:
+        type: string
+      is_admin:
+        type: string
+      last_name:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/user/add:
+    post:
+      consumes:
+      - application/json
+      description: Register a new admin
+      parameters:
+      - description: User registration request
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UserCreateReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Register a new admin
+      tags:
+      - admin
+  /admin/user/all:
+    get:
+      consumes:
+      - application/json
+      description: Get the profile of the authenticated users
+      parameters:
+      - description: Role
+        in: query
+        name: role
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.GetAllUsersRes'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get users
+      tags:
+      - admin
+  /admin/user/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the profil of the authenticated user
+      parameters:
+      - description: Id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile deleted
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete user profile
+      tags:
+      - admin
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with username and password
+      parameters:
+      - description: User login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UserLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JWT tokens
+          schema:
+            $ref: '#/definitions/auth.TokenRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "401":
+          description: Invalid email or password
+          schema:
+            type: string
+      summary: Login a user
+      tags:
+      - auth
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Get the profile of the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.UserRes'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - user
+  /refresh-token:
+    get:
+      consumes:
+      - application/json
+      description: Get the token of the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.TokenRes'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get token
+      tags:
+      - user
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  migrate-road:
+    image: migrate/migrate
+    networks: 
+      - road
+    volumes:
+      - ./service-1/migrations:/migrations
+    command: [ "-path", "/migrations", "-database", "postgres://postgres:1111@postgres-road:5432/road-24?sslmode=disable", "up" ]
+    depends_on:
+      - postgres-road
+
+  postgres-road:
+    container_name: postgres-road
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+      PGDATA: /data/postgres
+      POSTGRES_DB: road-24
+    volumes:
+     - road_postgres_data:/var/lib/postgres/data
+    ports:
+      - "5440:5332"
+    networks:
+      - road
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  
+  # booking-service:
+  #   container_name: booking-service
+  #   build: ./booking-service
+  #   depends_on:
+  #     - postgres-db
+  #     - mongo
+  #   ports:
+  #     - "50010:50010"
+  #   networks:
+  #     - carwash-ntwr    
+    
+  # carwash-gateway:
+  #   container_name: carwash-gateway
+  #   build: ./api-gateway
+  #   depends_on:
+  #     - postgres-db
+  #     - booking-service
+  #   ports:
+  #     - "8002:8002"
+  #   networks:
+  #     - carwash-ntwr
+
+  service-1:
+    container_name: service-1
+    build: ./service-1
+    depends_on: 
+      - postgres-road
+    ports:
+      - "8040:8040"
+    networks:
+      - road
+
+  redis-road:
+    image: redis:latest
+    container_name: redis-road
+    ports:
+      - "6390:6379"
+    networks:
+      - road
+    
+networks:
+  road:
+    driver: bridge
+
+volumes:
+  road_postgres_data: 
