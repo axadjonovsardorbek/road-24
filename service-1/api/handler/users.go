@@ -145,7 +145,7 @@ func (h *Handler) Profile(c *gin.Context) {
 		return
 	}
 
-	id := claims.(jwt.MapClaims)["user_id"].(string)
+	id := claims.(jwt.MapClaims)["id"].(string)
 
 	user, err := h.User.Profile(context.Background(), &ap.ById{Id: id})
 
@@ -287,7 +287,7 @@ func (h *Handler) RefreshToken(c *gin.Context) {
 		return
 	}
 
-	id := claims.(jwt.MapClaims)["user_id"].(string)
+	id := claims.(jwt.MapClaims)["id"].(string)
 
 	token, err := h.User.RefreshToken(context.Background(), &ap.ById{Id: id})
 

@@ -23,7 +23,7 @@ func GenerateJWTToken(userID string, username string, role string, is_admin stri
 	refreshToken := jwt.New(jwt.SigningMethodHS256)
 
 	claims := accessToken.Claims.(jwt.MapClaims)
-	claims["user_id"] = userID
+	claims["id"] = userID
 	claims["username"] = username
 	claims["role"] = role
 	claims["is_admin"] = is_admin
@@ -35,7 +35,7 @@ func GenerateJWTToken(userID string, username string, role string, is_admin stri
 	}
 
 	rftClaims := refreshToken.Claims.(jwt.MapClaims)
-	claims["user_id"] = userID
+	claims["id"] = userID
 	claims["username"] = username
 	claims["role"] = role
 	claims["is_admin"] = is_admin
@@ -61,7 +61,7 @@ func GenerateJWTTokenForDriver(role string, car_number string, technical_passpor
 	claims["car_number"] = car_number
 	claims["technical_passport"] = technical_passport
 	claims["is_admin"] = is_admin
-	claims["user_id"] = id
+	claims["id"] = id
 	claims["iat"] = time.Now().Unix()
 	claims["exp"] = time.Now().Add(180 * time.Minute).Unix() // Token expires in 3 hours
 	access, err := accessToken.SignedString([]byte(signingKey))

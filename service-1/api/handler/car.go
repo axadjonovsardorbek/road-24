@@ -38,7 +38,7 @@ func (h *Handler) CarCreate(c *gin.Context) {
 		return
 	}
 
-	id := claims.(jwt.MapClaims)["user_id"].(string)
+	id := claims.(jwt.MapClaims)["id"].(string)
 
 	var req cp.CarCreateReq
 
