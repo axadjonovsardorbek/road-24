@@ -64,7 +64,7 @@ func NewApi(h *handler.Handler) *gin.Engine {
 	admin.POST("/admin/fine/add", h.FineCreate) //for gai -> mobile
 	admin.GET("/admin/fine/{id}", h.FineGetById) //for admins and driver -> front and mobile
 	admin.GET("/admin/fine/all", h.FineGetAll) //for admins and driver -> front and mobile
-	admin.PUT("/admin/fine/{id}", h.FineUpdate) //for driver-> mobile for change image_url
+	admin.PUT("/admin/fine/update/{id}", h.FineUpdate) //for driver-> mobile for change image_url
 
 	admin.POST("/admin/service/add", h.ServiceCreate) //for admins -> front
 	admin.GET("/admin/service/{id}", h.ServiceGetById) //for admins -> front
