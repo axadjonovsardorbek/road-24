@@ -61,7 +61,7 @@ func GenerateJWTTokenForDriver(role string, car_number string, technical_passpor
 	claims["car_number"] = car_number
 	claims["technical_passport"] = technical_passport
 	claims["is_admin"] = is_admin
-	claims["id"] = id
+	claims["user_id"] = id
 	claims["iat"] = time.Now().Unix()
 	claims["exp"] = time.Now().Add(180 * time.Minute).Unix() // Token expires in 3 hours
 	access, err := accessToken.SignedString([]byte(signingKey))
