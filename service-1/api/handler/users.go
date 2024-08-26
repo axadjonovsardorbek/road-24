@@ -77,7 +77,7 @@ func (h *Handler) Register(c *gin.Context) {
 // @Param credentials body ap.UserLoginReq true "User login credentials"
 // @Success 200 {object} ap.TokenRes "JWT tokens"
 // @Failure 400 {object} string "Invalid request payload"
-// @Failure 401 {object} string "Invalid email or password"
+// @Failure 401 {object} string "Invalid username or password"
 // @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
 	var req ap.UserLoginReq
@@ -88,6 +88,35 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	res, err := h.User.Login(context.Background(), &req)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
+// Login godoc
+// @Summary Login a user
+// @Description Authenticate user with username and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param credentials body ap.DriverLoginReq true "User login credentials"
+// @Success 200 {object} ap.TokenRes "JWT tokens"
+// @Failure 400 {object} string "Invalid request payload"
+// @Failure 401 {object} string "Invalid number or passport"
+// @Router /login/driver [post]
+func (h *Handler) LoginDriver(c *gin.Context) {
+	var req ap.DriverLoginReq
+
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	res, err := h.User.LoginDriver(context.Background(), &req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -259,6 +288,43 @@ func (h *Handler) RefreshToken(c *gin.Context) {
 	}
 
 	id := claims.(jwt.MapClaims)["user_id"].(string)
+
+	token, err := h.User.RefreshToken(context.Background(), &ap.ById{Id: id})
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, token)
+}
+
+// RefreshToken godoc
+// @Summary Get token
+// @Description Get the token of the authenticated user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Success 200 {object} ap.TokenRes
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 404 {object} string "User not found"
+// @Failure 500 {object} string "Server error"
+// @Security BearerAuth
+// @Router /refresh-token/driver [get]
+func (h *Handler) RefreshTokenForDriver(c *gin.Context) {
+	claims, exists := c.Get("claims")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	id := claims.(jwt.MapClaims)["id"].(string)
+	role := claims.(jwt.MapClaims)["role"].(string)
+
+	if role != "driver"{
+		c.JSON(http.StatusForbidden, gin.H{"error": "This page forbidden for you"})
+		return
+	}
 
 	token, err := h.User.RefreshToken(context.Background(), &ap.ById{Id: id})
 

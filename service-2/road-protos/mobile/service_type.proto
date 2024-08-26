@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "genproto/mobile";
+
+package mobile;
+
+import "common2.proto";
+
+service ServiceTypeService{
+    rpc Create(ServiceTypeCreateReq) returns(Void);
+    rpc GetById(ById) returns(ServiceTypeGetByIdRes);
+    rpc GetAll(ServiceTypeGetAllReq) returns(ServiceTypeGetAllRes);
+    rpc Delete(ById) returns(Void);
+}
+
+message ServiceTypeRes{
+    string id = 1;
+    string name = 2;
+}
+
+message ServiceTypeCreateReq{
+    string name = 1;
+}
+
+message ServiceTypeGetByIdRes{
+    ServiceTypeRes service = 1;
+}
+
+message ServiceTypeGetAllRes{
+    repeated ServiceTypeRes services = 1;
+}
+
+message ServiceTypeGetAllReq{
+    Filter filter = 1;
+}

@@ -52,6 +52,42 @@ func GenerateJWTToken(userID string, username string, role string, is_admin stri
 	}
 }
 
+func GenerateJWTTokenForDriver(role string, car_number string, technical_passport string, is_admin string, id string) *Tokens {
+	accessToken := jwt.New(jwt.SigningMethodHS256)
+	refreshToken := jwt.New(jwt.SigningMethodHS256)
+
+	claims := accessToken.Claims.(jwt.MapClaims)
+	claims["role"] = role
+	claims["car_number"] = car_number
+	claims["technical_passport"] = technical_passport
+	claims["is_admin"] = is_admin
+	claims["id"] = id
+	claims["iat"] = time.Now().Unix()
+	claims["exp"] = time.Now().Add(180 * time.Minute).Unix() // Token expires in 3 hours
+	access, err := accessToken.SignedString([]byte(signingKey))
+	if err != nil {
+		log.Fatal("error while generating access token : ", err)
+	}
+
+	rftClaims := refreshToken.Claims.(jwt.MapClaims)
+	claims["role"] = role
+	claims["car_number"] = car_number
+	claims["technical_passport"] = technical_passport
+	claims["is_admin"] = is_admin
+	claims["id"] = id
+	rftClaims["iat"] = time.Now().Unix()
+	rftClaims["exp"] = time.Now().Add(24 * time.Hour).Unix() // Refresh token expires in 24 hours
+	refresh, err := refreshToken.SignedString([]byte(signingKey))
+	if err != nil {
+		log.Fatal("error while generating refresh token : ", err)
+	}
+
+	return &Tokens{
+		AccessToken:  access,
+		RefreshToken: refresh,
+	}
+}
+
 func ValidateToken(tokenStr string) (bool, error) {
 	_, err := ExtractClaim(tokenStr)
 	if err != nil {

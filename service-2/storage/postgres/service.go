@@ -1,13 +1,14 @@
 package postgres
 
 import (
-	bp "booking/genproto/booking"
 	"database/sql"
 	"errors"
 	"fmt"
 	"log"
 	"strconv"
 	"strings"
+
+	mp "mobile/genproto/mobile"
 
 	"github.com/google/uuid"
 )
@@ -20,58 +21,69 @@ func NewServiceRepo(db *sql.DB) *ServiceRepo {
 	return &ServiceRepo{db: db}
 }
 
-func (r *ServiceRepo) Create(req *bp.ServiceRes) (*bp.Void, error) {
+func (r *ServiceRepo) Create(req *mp.ServiceCreateReq) (*mp.Void, error) {
 	id := uuid.New().String()
 
 	query := `
 	INSERT INTO services (
 		id,
-		name,
-		description,
-		price,
-		duration
-	) VALUES ($1, $2, $3, $4, $5)
+		type,
+		sertificat_number,
+		owner_name,
+		address,
+		phone_number,
+		name
+	) VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
 
-	_, err := r.db.Exec(query, id, req.Name, req.Description, req.Price, req.Duration)
-
+	_, err := r.db.Exec(query, id, req.Type, req.SertificatNumber, req.OwnerName, req.Address, req.PhoneNumber, req.Name)
 	if err != nil {
-		log.Println("Error while creating comment: ", err)
+		log.Println("Error while creating service: ", err)
 		return nil, err
 	}
 
 	log.Println("Successfully created service")
-
 	return nil, nil
 }
-func (r *ServiceRepo) GetById(req *bp.ById) (*bp.ServiceGetByIdRes, error) {
-	service := bp.ServiceGetByIdRes{
-		Service: &bp.ServiceRes{},
+
+func (r *ServiceRepo) GetById(req *mp.ById) (*mp.ServiceGetByIdRes, error) {
+	service := mp.ServiceGetByIdRes{
+		Service: &mp.ServiceRes{
+			Type: &mp.ServiceTypeRes{},
+		},
 	}
 
 	query := `
 	SELECT 
-		id,
-		name,
-		description,
-		price,
-		duration
+		s.id,
+		t.id,
+		t.name,
+		s.name,
+		s.sertificat_number,
+		s.owner_name,
+		s.address,
+		s.phone_number
 	FROM 
-		services
+		services s
+	JOIN 
+		service_types t 
+	ON 
+		t.name = s.type AND t.deleted_at = 0
 	WHERE 
-		id = $1
-	AND 
-		deleted_at = 0	
+		s.deleted_at = 0 AND s.id = $1
 	`
 
 	row := r.db.QueryRow(query, req.Id)
 
 	err := row.Scan(
 		&service.Service.Id,
+		&service.Service.Type.Id,
+		&service.Service.Type.Name,
 		&service.Service.Name,
-		&service.Service.Description,
-		&service.Service.Price,
-		&service.Service.Duration,
+		&service.Service.SertificatNumber,
+		&service.Service.OwnerName,
+		&service.Service.Address,
+		&service.Service.PhoneNumber,
 	)
 
 	if err != nil {
@@ -79,72 +91,80 @@ func (r *ServiceRepo) GetById(req *bp.ById) (*bp.ServiceGetByIdRes, error) {
 		return nil, err
 	}
 
-	log.Println("Successfully got service")
-
+	log.Println("Successfully got service by id")
 	return &service, nil
 }
-func (r *ServiceRepo) GetAll(req *bp.ServiceGetAllReq) (*bp.ServiceGetAllRes, error) {
-	services := bp.ServiceGetAllRes{}
+
+func (r *ServiceRepo) GetAll(req *mp.ServiceGetAllReq) (*mp.ServiceGetAllRes, error) {
+	services := mp.ServiceGetAllRes{}
 
 	query := `
-	SELECT
-		id,
-		name,
-		description,
-		price,
-		duration
+	SELECT 
+		s.id,
+		t.id,
+		t.name,
+		s.name,
+		s.sertificat_number,
+		s.owner_name,
+		s.address,
+		s.phone_number
 	FROM 
-		services
+		services s
+	JOIN 
+		service_types t 
+	ON 
+		t.name = s.type AND t.deleted_at = 0
 	WHERE 
-		deleted_at = 0	
+		s.deleted_at = 0
 	`
 
 	var args []interface{}
 	var conditions []string
 
-	if req.Price >= 0 {
-		conditions = append(conditions, " price <= $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.Price)
+	if req.Address != "" && req.Address != "string" {
+		conditions = append(conditions, " LOWER(s.address) LIKE LOWER($"+strconv.Itoa(len(args)+1)+")")
+		args = append(args, "%"+req.Address+"%")
 	}
 
 	if len(conditions) > 0 {
 		query += " AND " + strings.Join(conditions, " AND ")
 	}
 
-	var limit int32
-	var offset int32
-
-	limit = 10
-	offset = (req.Filter.Page - 1) * limit
+	var limit int32 = 10
+	var offset int32 = (req.Filter.Page - 1) * limit
 
 	args = append(args, limit, offset)
 	query += fmt.Sprintf(" LIMIT $%d OFFSET $%d", len(args)-1, len(args))
 
 	rows, err := r.db.Query(query, args...)
-
 	if err == sql.ErrNoRows {
 		log.Println("Services not found")
 		return nil, errors.New("services list is empty")
 	}
 
 	if err != nil {
-		log.Println("Error while retriving services: ", err)
+		log.Println("Error while retrieving services: ", err)
 		return nil, err
 	}
 
 	for rows.Next() {
-		service := bp.ServiceRes{}
+		service := mp.ServiceRes{
+			Type: &mp.ServiceTypeRes{},
+		}
 
 		err := rows.Scan(
 			&service.Id,
+			&service.Type.Id,
+			&service.Type.Name,
 			&service.Name,
-			&service.Description,
-			&service.Price,
-			&service.Duration,
+			&service.SertificatNumber,
+			&service.OwnerName,
+			&service.Address,
+			&service.PhoneNumber,
 		)
 
 		if err != nil {
-			log.Println("Error while scanning all services: ", err)
+			log.Println("Error while scanning services: ", err)
 			return nil, err
 		}
 
@@ -152,58 +172,10 @@ func (r *ServiceRepo) GetAll(req *bp.ServiceGetAllReq) (*bp.ServiceGetAllRes, er
 	}
 
 	log.Println("Successfully fetched all services")
-
 	return &services, nil
 }
-func (r *ServiceRepo) Update(req *bp.ServiceUpdateReq) (*bp.Void, error) {
-	query := `
-	UPDATE
-		services
-	SET 
-	`
 
-	var conditions []string
-	var args []interface{}
-
-	if req.Service.Name != "" && req.Service.Name != "string" {
-		conditions = append(conditions, " name = $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.Service.Name)
-	}
-	if req.Service.Description != "" && req.Service.Description != "string" {
-		conditions = append(conditions, " description = $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.Service.Description)
-	}
-	if req.Service.Duration > 0 {
-		conditions = append(conditions, " duration = $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.Service.Duration)
-	}
-	if req.Service.Price >= 0 {
-		conditions = append(conditions, " price = $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.Service.Price)
-	}
-
-	if len(conditions) == 0 {
-		return nil, errors.New("nothing to update")
-	}
-
-	conditions = append(conditions, " updated_at = now()")
-	query += strings.Join(conditions, ", ")
-	query += " WHERE id = $" + strconv.Itoa(len(args)+1) + " AND deleted_at = 0"
-
-	args = append(args, req.Id)
-
-	_, err := r.db.Exec(query, args...)
-
-	if err != nil {
-		log.Println("Error while updating service: ", err)
-		return nil, err
-	}
-
-	log.Println("Successfully updated service")
-
-	return nil, nil
-}
-func (r *ServiceRepo) Delete(req *bp.ById) (*bp.Void, error) {
+func (r *ServiceRepo) Delete(req *mp.ById) (*mp.Void, error) {
 	query := `
 	UPDATE 
 		services

@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option go_package = "genproto/mobile";
+
+package mobile;
+
+import "common2.proto";
+
+service DriverLicenceService{
+    rpc Create(DriverLicenceCreateReq) returns(Void);
+    rpc GetById(ById) returns(DriverLicenceGetByIdRes);
+    rpc GetAll(DriverLicenceGetAllReq) returns(DriverLicenceGetAllRes);
+    rpc Delete(ById) returns(Void);
+}
+
+message DriverLicenceRes{
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string third_name = 4;
+    string address = 5;
+    string got_date = 6;
+    string exp_date = 7;
+    string category = 8;
+    string got_address = 9;
+    string licence_number = 10;
+}
+
+message DriverLicenceCreateReq{
+    string first_name = 1;
+    string last_name = 2;
+    string third_name = 3;
+    string address = 4;
+    string got_date = 5;
+    string exp_date = 6;
+    string category = 7;
+    string got_address = 8;
+    string licence_number = 9;
+}
+
+message DriverLicenceGetByIdRes{
+    DriverLicenceRes licence = 1;
+}
+
+message DriverLicenceGetAllRes{
+    repeated DriverLicenceRes licences = 1;
+}
+
+message DriverLicenceGetAllReq{
+    Filter filter = 1;
+    string category = 2;
+    string exp_at = 3;
+}

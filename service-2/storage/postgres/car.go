@@ -40,7 +40,7 @@ func (r *CarRepo) Create(req *mp.CarCreateReq) (*mp.Void, error) {
 	) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 	`
 
-	_, err := r.db.Exec(query, id, req.StafId, req.TypeId, req.Color, req.Year, req.BodyNumber, req.HorsePower, req.Number, req.TechnicalPassport, req.Model, req.ImageUrl)
+	_, err := r.db.Exec(query, id, req.StafId, req.Type, req.Color, req.Year, req.BodyNumber, req.HorsePower, req.Number, req.TechnicalPassport, req.Model, req.ImageUrl)
 	if err != nil {
 		log.Println("Error while creating car: ", err)
 		return nil, err
@@ -52,36 +52,51 @@ func (r *CarRepo) Create(req *mp.CarCreateReq) (*mp.Void, error) {
 
 func (r *CarRepo) GetById(req *mp.ById) (*mp.CarGetByIdRes, error) {
 	car := mp.CarGetByIdRes{
-		Car: &mp.CarRes{},
+		Car: &mp.CarRes{
+			StafId: &mp.StafRes{},
+			Type: &mp.CarTypeRes{},
+		},
 	}
 
 	query := `
 	SELECT 
-		id,
-		staf_id,
-		type,
-		color,
-		year,
-		body_number,
-		horse_power,
-		number,
-		technical_passport,
-		model,
-		image_url
+		c.id,
+		s.id,
+		s.first_name,
+		s.last_name,
+		t.id,
+		t.name,
+		c.color,
+		c.year,
+		c.body_number,
+		c.horse_power,
+		c.number,
+		c.technical_passport,
+		c.model,
+		c.image_url
 	FROM 
-		cars
+		cars c
+	JOIN 
+		users s 
+	ON 
+		s.id = c.staf_id AND s.deleted_at = 0
+	JOIN 
+		car_types t 
+	ON 
+		t.name = c.type AND t.deleted_at = 0
 	WHERE 
-		id = $1
-	AND 
-		deleted_at = 0
+		c.deleted_at = 0 AND c.id = $1
 	`
 
 	row := r.db.QueryRow(query, req.Id)
 
 	err := row.Scan(
 		&car.Car.Id,
-		&car.Car.StafId,
-		&car.Car.TypeId,
+		&car.Car.StafId.Id,
+		&car.Car.StafId.FirstName,
+		&car.Car.StafId.LastName,
+		&car.Car.Type.Id,
+		&car.Car.Type.Name,
 		&car.Car.Color,
 		&car.Car.Year,
 		&car.Car.BodyNumber,
@@ -106,36 +121,47 @@ func (r *CarRepo) GetAll(req *mp.CarGetAllReq) (*mp.CarGetAllRes, error) {
 
 	query := `
 	SELECT 
-		id,
-		staf_id,
-		type,
-		color,
-		year,
-		body_number,
-		horse_power,
-		number,
-		technical_passport,
-		model,
-		image_url
+		c.id,
+		s.id,
+		s.first_name,
+		s.last_name,
+		t.id,
+		t.name,
+		c.color,
+		c.year,
+		c.body_number,
+		c.horse_power,
+		c.number,
+		c.technical_passport,
+		c.model,
+		c.image_url
 	FROM 
-		cars
+		cars c
+	JOIN 
+		users s 
+	ON 
+		s.id = c.staf_id AND s.deleted_at = 0
+	JOIN 
+		car_types t 
+	ON 
+		t.name = c.type AND t.deleted_at = 0
 	WHERE 
-		deleted_at = 0
+		c.deleted_at = 0
 	`
 
 	var args []interface{}
 	var conditions []string
 
 	if req.Type != "" && req.Type != "string" {
-		conditions = append(conditions, " type = $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.Type)
+		conditions = append(conditions, " LOWER(c.type) LIKE LOWER($"+strconv.Itoa(len(args)+1) + ")")
+		args = append(args, "%" + req.Type + "%")
 	}
 	if req.Model != "" && req.Model != "string" {
-		conditions = append(conditions, " model = $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.Model)
+		conditions = append(conditions, " LOWER(c.model) LIKE LOWER($"+strconv.Itoa(len(args)+1) + ")")
+		args = append(args, "%" + req.Model + "%")
 	}
-	if req.Year != "" && req.Year != "string" {
-		conditions = append(conditions, " year = $"+strconv.Itoa(len(args)+1))
+	if req.Year > 0{
+		conditions = append(conditions, " c.year = $"+strconv.Itoa(len(args)+1))
 		args = append(args, req.Year)
 	}
 
@@ -161,12 +187,18 @@ func (r *CarRepo) GetAll(req *mp.CarGetAllReq) (*mp.CarGetAllRes, error) {
 	}
 
 	for rows.Next() {
-		car := mp.CarRes{}
+		car := mp.CarRes{
+			StafId: &mp.StafRes{},
+			Type: &mp.CarTypeRes{},
+		}
 
 		err := rows.Scan(
 			&car.Id,
-			&car.StafId,
-			&car.TypeId,
+			&car.StafId.Id,
+			&car.StafId.FirstName,
+			&car.StafId.LastName,
+			&car.Type.Id,
+			&car.Type.Name,
 			&car.Color,
 			&car.Year,
 			&car.BodyNumber,
@@ -187,6 +219,49 @@ func (r *CarRepo) GetAll(req *mp.CarGetAllReq) (*mp.CarGetAllRes, error) {
 
 	log.Println("Successfully fetched all cars")
 	return &cars, nil
+}
+
+func (r *CarRepo) Update(req *mp.CarUpdateReq)(*mp.Void, error){
+	query := `
+	UPDATE
+		cars
+	SET 
+	`
+
+	var conditions []string
+	var args []interface{}
+
+	if req.ImageUrl != "" && req.ImageUrl != "string" {
+		conditions = append(conditions, " image_url = $"+strconv.Itoa(len(args)+1))
+		args = append(args, req.ImageUrl)
+	}
+
+	if len(conditions) == 0 {
+		return nil, errors.New("nothing to update")
+	}
+
+	conditions = append(conditions, " updated_at = now()")
+	query += strings.Join(conditions, ", ")
+	query += " WHERE car_number = $" + strconv.Itoa(len(args)+1) + " AND deleted_at = 0" + " AND technical_passport = $" + strconv.Itoa(len(args)+2)
+
+	args = append(args, req.CarNumber, req.TechnicalPassport)
+
+	res, err := r.db.Exec(query, args...)
+	if err != nil {
+		log.Println("Error while updating car: ", err)
+		return nil, err
+	}
+
+	if r, err := res.RowsAffected(); r == 0 {
+		if err != nil {
+			return nil, err
+		}
+		return nil, fmt.Errorf("car with car number %s and passport %s couldn't update", req.CarNumber, req.TechnicalPassport)
+	}
+
+	log.Println("Successfully updated car")
+
+	return nil, nil
 }
 
 func (r *CarRepo) Delete(req *mp.ById) (*mp.Void, error) {

@@ -1,4 +1,11 @@
 definitions:
+  auth.DriverLoginReq:
+    properties:
+      car_number:
+        type: string
+      technical_passport:
+        type: string
+    type: object
   auth.GetAllUsersRes:
     properties:
       users:
@@ -45,16 +52,1259 @@ definitions:
         type: string
       last_name:
         type: string
-      password:
-        type: string
       role:
         type: string
       username:
         type: string
     type: object
+  mobile.CarCreateReq:
+    properties:
+      body_number:
+        type: string
+      color:
+        type: string
+      horse_power:
+        type: integer
+      image_url:
+        type: string
+      model:
+        type: string
+      number:
+        type: string
+      staf_id:
+        type: string
+      technical_passport:
+        type: string
+      type:
+        type: string
+      year:
+        type: integer
+    type: object
+  mobile.CarGetAllRes:
+    properties:
+      cars:
+        items:
+          $ref: '#/definitions/mobile.CarRes'
+        type: array
+    type: object
+  mobile.CarGetByIdRes:
+    properties:
+      car:
+        $ref: '#/definitions/mobile.CarRes'
+    type: object
+  mobile.CarRes:
+    properties:
+      body_number:
+        type: string
+      color:
+        type: string
+      horse_power:
+        type: integer
+      id:
+        type: string
+      image_url:
+        type: string
+      model:
+        type: string
+      number:
+        type: string
+      staf_id:
+        $ref: '#/definitions/mobile.StafRes'
+      technical_passport:
+        type: string
+      type:
+        $ref: '#/definitions/mobile.CarTypeRes'
+      year:
+        type: integer
+    type: object
+  mobile.CarServiceCreateReq:
+    properties:
+      car_number:
+        type: string
+      exp_date:
+        type: string
+      service_date:
+        type: string
+      service_type:
+        type: string
+    type: object
+  mobile.CarServiceGetAllRes:
+    properties:
+      cars:
+        items:
+          $ref: '#/definitions/mobile.CarServiceRes'
+        type: array
+    type: object
+  mobile.CarServiceGetByIdRes:
+    properties:
+      car:
+        $ref: '#/definitions/mobile.CarServiceRes'
+    type: object
+  mobile.CarServiceRes:
+    properties:
+      car_number:
+        type: string
+      exp_date:
+        type: string
+      id:
+        type: string
+      service_date:
+        type: string
+      service_type:
+        $ref: '#/definitions/mobile.ServiceTypeRes'
+    type: object
+  mobile.CarTypeCreateReq:
+    properties:
+      name:
+        type: string
+    type: object
+  mobile.CarTypeGetAllRes:
+    properties:
+      cars:
+        items:
+          $ref: '#/definitions/mobile.CarTypeRes'
+        type: array
+    type: object
+  mobile.CarTypeGetByIdRes:
+    properties:
+      car:
+        $ref: '#/definitions/mobile.CarTypeRes'
+    type: object
+  mobile.CarTypeRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  mobile.DriverLicenceCreateReq:
+    properties:
+      address:
+        type: string
+      category:
+        type: string
+      exp_date:
+        type: string
+      first_name:
+        type: string
+      got_address:
+        type: string
+      got_date:
+        type: string
+      last_name:
+        type: string
+      licence_number:
+        type: string
+      third_name:
+        type: string
+    type: object
+  mobile.DriverLicenceGetAllRes:
+    properties:
+      licences:
+        items:
+          $ref: '#/definitions/mobile.DriverLicenceRes'
+        type: array
+    type: object
+  mobile.DriverLicenceGetByIdRes:
+    properties:
+      licence:
+        $ref: '#/definitions/mobile.DriverLicenceRes'
+    type: object
+  mobile.DriverLicenceRes:
+    properties:
+      address:
+        type: string
+      category:
+        type: string
+      exp_date:
+        type: string
+      first_name:
+        type: string
+      got_address:
+        type: string
+      got_date:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      licence_number:
+        type: string
+      third_name:
+        type: string
+    type: object
+  mobile.FineCreateReq:
+    properties:
+      car_number:
+        type: string
+      fine_amount:
+        type: integer
+      fine_date:
+        type: string
+      licence_number:
+        type: string
+      payment_date:
+        type: string
+      staf_id:
+        type: string
+      status:
+        type: string
+      technical_number:
+        type: string
+    type: object
+  mobile.FineGetAllRes:
+    properties:
+      fines:
+        items:
+          $ref: '#/definitions/mobile.FineRes'
+        type: array
+    type: object
+  mobile.FineGetByIdRes:
+    properties:
+      fine:
+        $ref: '#/definitions/mobile.FineRes'
+    type: object
+  mobile.FineRes:
+    properties:
+      car_number:
+        type: string
+      fine_amount:
+        type: integer
+      fine_date:
+        type: string
+      id:
+        type: string
+      licence_number:
+        type: string
+      payment_date:
+        type: string
+      staf_id:
+        $ref: '#/definitions/mobile.StafRes'
+      status:
+        type: string
+      technical_number:
+        type: string
+    type: object
+  mobile.ServiceCreateReq:
+    properties:
+      address:
+        type: string
+      name:
+        type: string
+      owner_name:
+        type: string
+      phone_number:
+        type: string
+      sertificat_number:
+        type: string
+      type:
+        type: string
+    type: object
+  mobile.ServiceGetAllRes:
+    properties:
+      services:
+        items:
+          $ref: '#/definitions/mobile.ServiceRes'
+        type: array
+    type: object
+  mobile.ServiceGetByIdRes:
+    properties:
+      service:
+        $ref: '#/definitions/mobile.ServiceRes'
+    type: object
+  mobile.ServiceRes:
+    properties:
+      address:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      owner_name:
+        type: string
+      phone_number:
+        type: string
+      sertificat_number:
+        type: string
+      type:
+        $ref: '#/definitions/mobile.ServiceTypeRes'
+    type: object
+  mobile.ServiceTypeCreateReq:
+    properties:
+      name:
+        type: string
+    type: object
+  mobile.ServiceTypeGetAllRes:
+    properties:
+      services:
+        items:
+          $ref: '#/definitions/mobile.ServiceTypeRes'
+        type: array
+    type: object
+  mobile.ServiceTypeGetByIdRes:
+    properties:
+      service:
+        $ref: '#/definitions/mobile.ServiceTypeRes'
+    type: object
+  mobile.ServiceTypeRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  mobile.StafRes:
+    properties:
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
+  /admin/car/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a service by ID
+      parameters:
+      - description: Car ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Car deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid provider ID
+          schema:
+            type: string
+        "404":
+          description: Car not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete service
+      tags:
+      - car
+    get:
+      consumes:
+      - application/json
+      description: Get a service
+      parameters:
+      - description: Car ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.CarGetByIdRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - car
+  /admin/car/add:
+    post:
+      consumes:
+      - application/json
+      description: Create a new service
+      parameters:
+      - description: Car data
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/mobile.CarCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Car created
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - car
+  /admin/car/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all service
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Model
+        in: query
+        name: model
+        type: string
+      - description: Type
+        in: query
+        name: type
+        type: string
+      - description: Year
+        in: query
+        name: year
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.CarGetAllRes'
+        "400":
+          description: Invalid parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all service
+      tags:
+      - car
+  /admin/car/service/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a service by ID
+      parameters:
+      - description: Car ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Car deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid provider ID
+          schema:
+            type: string
+        "404":
+          description: Car not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete service
+      tags:
+      - car
+    get:
+      consumes:
+      - application/json
+      description: Get a service
+      parameters:
+      - description: Car ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.CarServiceGetByIdRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - car
+  /admin/car/service/add:
+    post:
+      consumes:
+      - application/json
+      description: Create a new service
+      parameters:
+      - description: Car data
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/mobile.CarServiceCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Car created
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - car
+  /admin/car/service/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all service
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: CarNumber
+        in: query
+        name: car_number
+        type: string
+      - description: ServiceType
+        in: query
+        name: service_type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.CarServiceGetAllRes'
+        "400":
+          description: Invalid parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all service
+      tags:
+      - car
+  /admin/car/type/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a service by ID
+      parameters:
+      - description: Car ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Car deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid provider ID
+          schema:
+            type: string
+        "404":
+          description: Car not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete service
+      tags:
+      - car
+    get:
+      consumes:
+      - application/json
+      description: Get a service
+      parameters:
+      - description: Car ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.CarTypeGetByIdRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - car
+  /admin/car/type/add:
+    post:
+      consumes:
+      - application/json
+      description: Create a new service
+      parameters:
+      - description: Car data
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/mobile.CarTypeCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Car created
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - car
+  /admin/car/type/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all service
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.CarTypeGetAllRes'
+        "400":
+          description: Invalid parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all service
+      tags:
+      - car
+  /admin/driver/licence/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a service by ID
+      parameters:
+      - description: DriverLicence ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: DriverLicence deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid provider ID
+          schema:
+            type: string
+        "404":
+          description: DriverLicence not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete service
+      tags:
+      - licence
+    get:
+      consumes:
+      - application/json
+      description: Get a service
+      parameters:
+      - description: DriverLicence ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.DriverLicenceGetByIdRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - licence
+  /admin/driver/licence/add:
+    post:
+      consumes:
+      - application/json
+      description: Create a new service
+      parameters:
+      - description: DriverLicence data
+        in: body
+        name: licence
+        required: true
+        schema:
+          $ref: '#/definitions/mobile.DriverLicenceCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: DriverLicence created
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - licence
+  /admin/driver/licence/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all service
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Category
+        in: query
+        name: category
+        type: string
+      - description: ExpAt
+        in: query
+        name: exp_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.DriverLicenceGetAllRes'
+        "400":
+          description: Invalid parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all service
+      tags:
+      - licence
+  /admin/fine/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a service
+      parameters:
+      - description: Fine ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.FineGetByIdRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - fine
+  /admin/fine/add:
+    post:
+      consumes:
+      - application/json
+      description: Create a new service
+      parameters:
+      - description: Fine data
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/mobile.FineCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fine created
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - fine
+  /admin/fine/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all service
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: CarNumber
+        in: query
+        name: car_number
+        type: string
+      - description: StafId
+        in: query
+        name: staf_id
+        type: string
+      - description: Status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.FineGetAllRes'
+        "400":
+          description: Invalid parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all service
+      tags:
+      - fine
+  /admin/fine/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing service
+      parameters:
+      - description: Id
+        in: query
+        name: id
+        type: string
+      - description: PaymentDate
+        in: query
+        name: payment_date
+        type: string
+      - description: Status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fine updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "404":
+          description: Service not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update service
+      tags:
+      - fine
+  /admin/service/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a service by ID
+      parameters:
+      - description: Service ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid provider ID
+          schema:
+            type: string
+        "404":
+          description: Service not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete service
+      tags:
+      - service
+    get:
+      consumes:
+      - application/json
+      description: Get a service
+      parameters:
+      - description: Service ID
+        in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.ServiceGetByIdRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - service
+  /admin/service/add:
+    post:
+      consumes:
+      - application/json
+      description: Create a new service
+      parameters:
+      - description: Service data
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/mobile.ServiceCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service created
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - service
+  /admin/service/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all service
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Address
+        in: query
+        name: address
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.ServiceGetAllRes'
+        "400":
+          description: Invalid parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all service
+      tags:
+      - service
+  /admin/service/type/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a service by ID
+      parameters:
+      - description: Service ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid provider ID
+          schema:
+            type: string
+        "404":
+          description: Service not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete service
+      tags:
+      - service
+    get:
+      consumes:
+      - application/json
+      description: Get a service
+      parameters:
+      - description: Service ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.ServiceTypeGetByIdRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get service
+      tags:
+      - service
+  /admin/service/type/add:
+    post:
+      consumes:
+      - application/json
+      description: Create a new service
+      parameters:
+      - description: Service data
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/mobile.ServiceTypeCreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service created
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create service
+      tags:
+      - service
+  /admin/service/type/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all service
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/mobile.ServiceTypeGetAllRes'
+        "400":
+          description: Invalid parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all service
+      tags:
+      - service
   /admin/user/add:
     post:
       consumes:
@@ -160,6 +1410,40 @@ paths:
       summary: Delete user profile
       tags:
       - admin
+  /car/upload/image:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing service
+      parameters:
+      - description: Url
+        in: query
+        name: url
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Car updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "404":
+          description: Service not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update service
+      tags:
+      - car
   /login:
     post:
       consumes:
@@ -184,7 +1468,37 @@ paths:
           schema:
             type: string
         "401":
-          description: Invalid email or password
+          description: Invalid username or password
+          schema:
+            type: string
+      summary: Login a user
+      tags:
+      - auth
+  /login/driver:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with username and password
+      parameters:
+      - description: User login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.DriverLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JWT tokens
+          schema:
+            $ref: '#/definitions/auth.TokenRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "401":
+          description: Invalid number or passport
           schema:
             type: string
       summary: Login a user
@@ -220,6 +1534,35 @@ paths:
       tags:
       - user
   /refresh-token:
+    get:
+      consumes:
+      - application/json
+      description: Get the token of the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.TokenRes'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get token
+      tags:
+      - user
+  /refresh-token/driver:
     get:
       consumes:
       - application/json

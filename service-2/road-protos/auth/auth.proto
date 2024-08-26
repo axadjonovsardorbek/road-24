@@ -9,9 +9,12 @@ import "common1.proto";
 service UserService{
     rpc Register(UserCreateReq) returns(Void);
     rpc Login(UserLoginReq) returns(TokenRes);
+    rpc LoginDriver(DriverLoginReq) returns(TokenRes);
     rpc Profile(ById) returns(UserRes);
     rpc DeleteProfile(ById) returns(Void);
     rpc GetAllUsers(GetAllUsersReq) returns(GetAllUsersRes);
+    rpc RefreshToken(ById) returns(TokenRes);
+    rpc RefreshTokenForDriver(ById) returns(TokenRes);
 }
 
 message UserRes{
@@ -49,4 +52,9 @@ message GetAllUsersReq{
 
 message GetAllUsersRes{
     repeated UserRes users = 1;
+}
+
+message DriverLoginReq{
+    string car_number = 1;
+    string technical_passport = 2;
 }

@@ -109,20 +109,65 @@ func (u *UsersRepo) Login(req *ap.UserLoginReq) (*ap.TokenRes, error) {
 	return &tokens, nil
 }
 
+func (u *UsersRepo) LoginDriver(req *ap.DriverLoginReq) (*ap.TokenRes, error) {
+	var id string
+	var car_number string
+	var technical_passport string
+
+	query := `
+	SELECT 
+		id,
+		number,
+		technical_passport
+	FROM 
+		cars
+	WHERE
+		number = $1
+	AND 
+		deleted_at = 0
+	AND 
+		technical_passport = $2
+	`
+
+	row := u.db.QueryRow(query, req.CarNumber, req.TechnicalPassport)
+
+	err := row.Scan(
+		&id,
+		&car_number,
+		&technical_passport,
+	)
+
+	if err == sql.ErrNoRows {
+		return nil, errors.New("car not found")
+	}
+
+	if err != nil {
+		log.Println("Error while login driver: ", err)
+		return nil, err
+	}
+
+	token := t.GenerateJWTTokenForDriver("driver", car_number, technical_passport, "false", id)
+	tokens := ap.TokenRes{
+		Token: token.AccessToken,
+		ExpAt: "3 hours",
+	}
+
+	return &tokens, nil
+}
+
 func (u *UsersRepo) Profile(req *ap.ById) (*ap.UserRes, error) {
 	userData, err := u.rdb.Get(context.Background(), req.Id).Result()
 	if err == redis.Nil {
 		user := ap.UserRes{}
 
-	query := `
+		query := `
 	SELECT 
 		id, 
 		first_name,
 		last_name,
 		username,
 		role,
-		is_admin,
-		password
+		is_admin
 	FROM 	
 		users
 	WHERE
@@ -139,7 +184,6 @@ func (u *UsersRepo) Profile(req *ap.ById) (*ap.UserRes, error) {
 			&user.Username,
 			&user.Role,
 			&user.IsAdmin,
-			&user.Password,
 		)
 
 		if err != nil {
@@ -208,7 +252,6 @@ func (u *UsersRepo) DeleteProfile(req *ap.ById) (*ap.Void, error) {
 	return nil, nil
 }
 
-
 func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, error) {
 	users := ap.GetAllUsersRes{}
 
@@ -219,8 +262,7 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 		last_name,
 		username,
 		role,
-		is_admin,
-		password
+		is_admin
 	FROM 	
 		users
 	WHERE
@@ -269,7 +311,6 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 			&user.Username,
 			&user.Role,
 			&user.IsAdmin,
-			&user.Password,
 		)
 
 		if err != nil {
@@ -284,7 +325,6 @@ func (u *UsersRepo) GetAllUsers(req *ap.GetAllUsersReq) (*ap.GetAllUsersRes, err
 
 	return &users, nil
 }
-
 
 func (u *UsersRepo) RefreshToken(req *ap.ById) (*ap.TokenRes, error) {
 	var id string
@@ -328,6 +368,51 @@ func (u *UsersRepo) RefreshToken(req *ap.ById) (*ap.TokenRes, error) {
 	}
 
 	token := t.GenerateJWTToken(id, username, role, is_admin)
+	tokens := ap.TokenRes{
+		Token: token.RefreshToken,
+		ExpAt: "24 hours",
+	}
+
+	return &tokens, nil
+}
+
+func (u *UsersRepo) RefreshTokenForDriver(req *ap.ById) (*ap.TokenRes, error) {
+
+	var id string
+	var car_number string
+	var technical_passport string
+
+	query := `
+	SELECT 
+		id,
+		number,
+		technical_passport
+	FROM 
+		cars
+	WHERE
+		id = $1
+	AND 
+		deleted_at = 0
+	`
+
+	row := u.db.QueryRow(query, req.Id)
+
+	err := row.Scan(
+		&id,
+		&car_number,
+		&technical_passport,
+	)
+
+	if err == sql.ErrNoRows {
+		return nil, errors.New("car not found")
+	}
+
+	if err != nil {
+		log.Println("Error while login driver: ", err)
+		return nil, err
+	}
+
+	token := t.GenerateJWTTokenForDriver("driver", car_number, technical_passport, "false", id)
 	tokens := ap.TokenRes{
 		Token: token.RefreshToken,
 		ExpAt: "24 hours",

@@ -20,8 +20,8 @@ type Config struct {
 	REDIS_HOST string
 	REDIS_PORT string
 
-	KAFKA_HOST string
-	KAFKA_PORT string
+	MOBILE_HOST string
+	MOBILE_PORT string
 }
 
 func Load() Config {
@@ -42,8 +42,8 @@ func Load() Config {
 	config.REDIS_HOST = cast.ToString(coalesce("REDIS_HOST", "localhost"))
 	config.REDIS_PORT = cast.ToString(coalesce("REDIS_PORT", ":6379"))
 
-	config.KAFKA_HOST = cast.ToString(coalesce("KAFKA_HOST", "localhost"))
-	config.KAFKA_PORT = cast.ToString(coalesce("KAFKA_PORT", ":9092"))
+	config.MOBILE_HOST = cast.ToString(coalesce("MOBILE_HOST", "localhost"))
+	config.MOBILE_PORT = cast.ToString(coalesce("MOBILE_PORT", ":9092"))
 
 	return config
 }

@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option go_package = "genproto/mobile";
+
+package mobile;
+
+import "common2.proto";
+
+service FineService{
+    rpc Create(FineCreateReq) returns(Void);
+    rpc GetById(ById) returns(FineGetByIdRes);
+    rpc GetAll(FineGetAllReq) returns(FineGetAllRes);
+    rpc Update(FineUpdateReq) returns(Void);
+}
+
+message FineRes{
+    string id = 1;
+    StafRes staf_id = 2;
+    string technical_number = 3;
+    string car_number = 4;
+    string licence_number = 5;
+    string fine_date = 6;
+    int64 fine_amount = 7;
+    string payment_date = 8;
+    string status = 9;
+}
+
+message FineCreateReq{
+    string staf_id = 1;
+    string technical_number = 2;
+    string car_number = 3;
+    string licence_number = 4;
+    string fine_date = 5;
+    int64 fine_amount = 6;
+    string payment_date = 7;
+    string status = 8;
+}
+
+message FineUpdateReq{
+    string id = 1;
+    string payment_date = 2;
+    string status = 3;
+}
+
+message FineGetByIdRes{
+    FineRes fine = 1;
+}
+
+message FineGetAllRes{
+    repeated FineRes fines = 1;
+}
+
+message FineGetAllReq{
+    Filter filter = 1;
+    string car_number = 2;
+    string status = 3;
+    string staf_id = 4;
+}

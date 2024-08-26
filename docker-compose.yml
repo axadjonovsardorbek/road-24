@@ -32,33 +32,23 @@ services:
       timeout: 10s
       retries: 5
   
-  # booking-service:
-  #   container_name: booking-service
-  #   build: ./booking-service
-  #   depends_on:
-  #     - postgres-db
-  #     - mongo
-  #   ports:
-  #     - "50010:50010"
-  #   networks:
-  #     - carwash-ntwr    
+  service-2:
+    container_name: mobile-road
+    build: ./service-2
+    depends_on:
+      - postgres-road
+    ports:
+      - "50908:50908"
+    networks:
+      - road
     
-  # carwash-gateway:
-  #   container_name: carwash-gateway
-  #   build: ./api-gateway
-  #   depends_on:
-  #     - postgres-db
-  #     - booking-service
-  #   ports:
-  #     - "8002:8002"
-  #   networks:
-  #     - carwash-ntwr
 
   service-1:
     container_name: service-1
     build: ./service-1
     depends_on: 
       - postgres-road
+      - service-2
     ports:
       - "8040:8040"
     networks:

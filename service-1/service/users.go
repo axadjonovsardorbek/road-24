@@ -23,6 +23,10 @@ func (u *UsersService) Login(ctx context.Context, req *ap.UserLoginReq) (*ap.Tok
 	return u.storage.UserS.Login(req)
 }
 
+func (u *UsersService) LoginDriver(ctx context.Context, req *ap.DriverLoginReq) (*ap.TokenRes, error) {
+	return u.storage.UserS.LoginDriver(req)
+}
+
 func (u *UsersService) Profile(ctx context.Context, req *ap.ById) (*ap.UserRes, error) {
 	return u.storage.UserS.Profile(req)
 }
@@ -38,4 +42,9 @@ func (u *UsersService) GetAllUsers(ctx context.Context, req *ap.GetAllUsersReq) 
 func (u *UsersService) RefreshToken(ctx context.Context, req *ap.ById) (*ap.TokenRes, error) {
 	return u.storage.UserS.RefreshToken(req)
 }
+
+func (u *UsersService) RefreshTokenForDriver(ctx context.Context, req *ap.ById) (*ap.TokenRes, error) {
+	return u.storage.UserS.RefreshTokenForDriver(req)
+}
+
 

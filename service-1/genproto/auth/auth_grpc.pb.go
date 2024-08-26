@@ -19,11 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserService_Register_FullMethodName      = "/auth.UserService/Register"
-	UserService_Login_FullMethodName         = "/auth.UserService/Login"
-	UserService_Profile_FullMethodName       = "/auth.UserService/Profile"
-	UserService_DeleteProfile_FullMethodName = "/auth.UserService/DeleteProfile"
-	UserService_GetAllUsers_FullMethodName   = "/auth.UserService/GetAllUsers"
+	UserService_Register_FullMethodName              = "/auth.UserService/Register"
+	UserService_Login_FullMethodName                 = "/auth.UserService/Login"
+	UserService_LoginDriver_FullMethodName           = "/auth.UserService/LoginDriver"
+	UserService_Profile_FullMethodName               = "/auth.UserService/Profile"
+	UserService_DeleteProfile_FullMethodName         = "/auth.UserService/DeleteProfile"
+	UserService_GetAllUsers_FullMethodName           = "/auth.UserService/GetAllUsers"
+	UserService_RefreshToken_FullMethodName          = "/auth.UserService/RefreshToken"
+	UserService_RefreshTokenForDriver_FullMethodName = "/auth.UserService/RefreshTokenForDriver"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -32,9 +35,12 @@ const (
 type UserServiceClient interface {
 	Register(ctx context.Context, in *UserCreateReq, opts ...grpc.CallOption) (*Void, error)
 	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*TokenRes, error)
+	LoginDriver(ctx context.Context, in *DriverLoginReq, opts ...grpc.CallOption) (*TokenRes, error)
 	Profile(ctx context.Context, in *ById, opts ...grpc.CallOption) (*UserRes, error)
 	DeleteProfile(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
 	GetAllUsers(ctx context.Context, in *GetAllUsersReq, opts ...grpc.CallOption) (*GetAllUsersRes, error)
+	RefreshToken(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TokenRes, error)
+	RefreshTokenForDriver(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TokenRes, error)
 }
 
 type userServiceClient struct {
@@ -57,6 +63,15 @@ func (c *userServiceClient) Register(ctx context.Context, in *UserCreateReq, opt
 func (c *userServiceClient) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*TokenRes, error) {
 	out := new(TokenRes)
 	err := c.cc.Invoke(ctx, UserService_Login_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) LoginDriver(ctx context.Context, in *DriverLoginReq, opts ...grpc.CallOption) (*TokenRes, error) {
+	out := new(TokenRes)
+	err := c.cc.Invoke(ctx, UserService_LoginDriver_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,15 +105,36 @@ func (c *userServiceClient) GetAllUsers(ctx context.Context, in *GetAllUsersReq,
 	return out, nil
 }
 
+func (c *userServiceClient) RefreshToken(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TokenRes, error) {
+	out := new(TokenRes)
+	err := c.cc.Invoke(ctx, UserService_RefreshToken_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) RefreshTokenForDriver(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TokenRes, error) {
+	out := new(TokenRes)
+	err := c.cc.Invoke(ctx, UserService_RefreshTokenForDriver_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
 	Register(context.Context, *UserCreateReq) (*Void, error)
 	Login(context.Context, *UserLoginReq) (*TokenRes, error)
+	LoginDriver(context.Context, *DriverLoginReq) (*TokenRes, error)
 	Profile(context.Context, *ById) (*UserRes, error)
 	DeleteProfile(context.Context, *ById) (*Void, error)
 	GetAllUsers(context.Context, *GetAllUsersReq) (*GetAllUsersRes, error)
+	RefreshToken(context.Context, *ById) (*TokenRes, error)
+	RefreshTokenForDriver(context.Context, *ById) (*TokenRes, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -112,6 +148,9 @@ func (UnimplementedUserServiceServer) Register(context.Context, *UserCreateReq) 
 func (UnimplementedUserServiceServer) Login(context.Context, *UserLoginReq) (*TokenRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
+func (UnimplementedUserServiceServer) LoginDriver(context.Context, *DriverLoginReq) (*TokenRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginDriver not implemented")
+}
 func (UnimplementedUserServiceServer) Profile(context.Context, *ById) (*UserRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Profile not implemented")
 }
@@ -120,6 +159,12 @@ func (UnimplementedUserServiceServer) DeleteProfile(context.Context, *ById) (*Vo
 }
 func (UnimplementedUserServiceServer) GetAllUsers(context.Context, *GetAllUsersReq) (*GetAllUsersRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
+}
+func (UnimplementedUserServiceServer) RefreshToken(context.Context, *ById) (*TokenRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
+}
+func (UnimplementedUserServiceServer) RefreshTokenForDriver(context.Context, *ById) (*TokenRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshTokenForDriver not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -166,6 +211,24 @@ func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Login(ctx, req.(*UserLoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_LoginDriver_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DriverLoginReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).LoginDriver(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_LoginDriver_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).LoginDriver(ctx, req.(*DriverLoginReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -224,6 +287,42 @@ func _UserService_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ById)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_RefreshToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RefreshToken(ctx, req.(*ById))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_RefreshTokenForDriver_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ById)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RefreshTokenForDriver(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_RefreshTokenForDriver_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RefreshTokenForDriver(ctx, req.(*ById))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -240,6 +339,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_Login_Handler,
 		},
 		{
+			MethodName: "LoginDriver",
+			Handler:    _UserService_LoginDriver_Handler,
+		},
+		{
 			MethodName: "Profile",
 			Handler:    _UserService_Profile_Handler,
 		},
@@ -250,6 +353,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllUsers",
 			Handler:    _UserService_GetAllUsers_Handler,
+		},
+		{
+			MethodName: "RefreshToken",
+			Handler:    _UserService_RefreshToken_Handler,
+		},
+		{
+			MethodName: "RefreshTokenForDriver",
+			Handler:    _UserService_RefreshTokenForDriver_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

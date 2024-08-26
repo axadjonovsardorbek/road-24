@@ -1,23 +1,23 @@
 package postgres
 
 import (
-	"booking/config"
-	"booking/storage"
 	"database/sql"
 	"fmt"
+	"mobile/config"
+	"mobile/storage"
 
-	"github.com/go-redis/redis/v8"
 	_ "github.com/lib/pq"
 )
 
 type Storage struct {
-	Db               *sql.DB
-	ProviderS        storage.ProviderI
-	BookingS         storage.BookingI
-	PaymentS         storage.PaymentI
-	ReviewS          storage.ReviewI
-	ServiceS         storage.ServiceI
-	ProviderServiceS storage.ProviderServiceI
+	Db             *sql.DB
+	CarTypeS       storage.CarTypeI
+	CarS           storage.CarI
+	DriverLicenceS storage.DriverLicenceI
+	FineS          storage.FineI
+	ServiceTypeS   storage.ServiceTypeI
+	ServiceS       storage.ServiceI
+	CarServiceS    storage.CarServiceI
 }
 
 func NewPostgresStorage(config config.Config) (*Storage, error) {
@@ -33,26 +33,22 @@ func NewPostgresStorage(config config.Config) (*Storage, error) {
 		return nil, err
 	}
 
-	rAddr := fmt.Sprintf("%s%s", config.REDIS_HOST, config.REDIS_PORT)
-
-	rdb := redis.NewClient(&redis.Options{
-		Addr: rAddr,
-	})
-
-	provider := NewProviderRepo(db)
-	booking := NewBookingRepo(db, rdb)
-	payment := NewPaymentRepo(db)
-	review := NewReviewRepo(db)
+	car_service := NewCarServiceRepo(db)
+	car_type := NewCarTypeRepo(db)
+	car := NewCarRepo(db)
+	driver_licence := NewDriverLicenceRepo(db)
+	fine := NewFineRepo(db)
+	service_type := NewServiceTypeRepo(db)
 	service := NewServiceRepo(db)
-	provider_service := NewProviderServiceRepo(db)
 
 	return &Storage{
-		Db:               db,
-		ProviderS:        provider,
-		BookingS:         booking,
-		PaymentS:         payment,
-		ReviewS:          review,
-		ServiceS:         service,
-		ProviderServiceS: provider_service,
+		Db:             db,
+		CarServiceS:    car_service,
+		CarTypeS:       car_type,
+		CarS:           car,
+		DriverLicenceS: driver_licence,
+		ServiceS:       service,
+		ServiceTypeS:   service_type,
+		FineS:          fine,
 	}, nil
 }

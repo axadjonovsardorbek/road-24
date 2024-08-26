@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option go_package = "genproto/mobile";
+
+package mobile;
+
+import "common2.proto";
+import "service_type.proto";
+
+service CarServiceService{
+    rpc Create(CarServiceCreateReq) returns(Void);
+    rpc GetById(ById) returns(CarServiceGetByIdRes);
+    rpc GetAll(CarServiceGetAllReq) returns(CarServiceGetAllRes);
+    rpc Delete(ById) returns(Void);
+}
+
+message CarServiceRes{
+    string id = 1;
+    string car_number = 2;
+    ServiceTypeRes service_type = 3;
+    string service_date = 4;
+    string exp_date = 5;
+}
+
+message CarServiceCreateReq{
+    string car_number = 1;
+    string service_type = 2;
+    string service_date = 3;
+    string exp_date = 4;
+}
+
+message CarServiceGetByIdRes{
+    CarServiceRes car = 1;
+}
+
+message CarServiceGetAllRes{
+    repeated CarServiceRes cars = 1;
+}
+
+message CarServiceGetAllReq{
+    string car_number = 1;
+    string service_type = 2;
+    Filter filter = 4;
+}
