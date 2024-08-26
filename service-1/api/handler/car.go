@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"context"
 	cp "auth/genproto/mobile"
+	"context"
 	"log"
 	"net/http"
 	"strconv"
@@ -38,7 +38,7 @@ func (h *Handler) CarCreate(c *gin.Context) {
 		return
 	}
 
-	id := claims.(jwt.MapClaims)["id"].(string)
+	id := claims.(jwt.MapClaims)["user_id"].(string)
 
 	var req cp.CarCreateReq
 
@@ -82,8 +82,7 @@ func (h *Handler) CarGetById(c *gin.Context) {
 
 	role := claims.(jwt.MapClaims)["role"].(string)
 
-
-	if role == "driver"{
+	if role == "driver" {
 		id := claims.(jwt.MapClaims)["id"].(string)
 		by_id.Id = id
 	} else if role == "service" {
@@ -211,8 +210,8 @@ func (h *Handler) CarUpdate(c *gin.Context) {
 	technical_passport := claims.(jwt.MapClaims)["technical_passport"].(string)
 
 	req := cp.CarUpdateReq{
-		ImageUrl:      c.Query("url"),
-		CarNumber: number,
+		ImageUrl:          c.Query("url"),
+		CarNumber:         number,
 		TechnicalPassport: technical_passport,
 	}
 
@@ -247,11 +246,11 @@ func (h *Handler) CarDelete(c *gin.Context) {
 	role := claims.(jwt.MapClaims)["role"].(string)
 	is_admin := claims.(jwt.MapClaims)["is_admin"].(string)
 
-	if role == "driver" || role == "service" || is_admin == "false"{
+	if role == "driver" || role == "service" || is_admin == "false" {
 		c.JSON(http.StatusForbidden, gin.H{"error": "This page forbidden for you"})
 		return
 	}
-	
+
 	id := &cp.ById{Id: c.Param("id")}
 
 	_, err := h.srvs.Car.Delete(context.Background(), id)

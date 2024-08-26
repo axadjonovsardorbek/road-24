@@ -37,7 +37,7 @@ func (h *Handler) FineCreate(c *gin.Context) {
 		return
 	}
 
-	id := claims.(jwt.MapClaims)["id"].(string)
+	id := claims.(jwt.MapClaims)["user_id"].(string)
 
 	var req cp.FineCreateReq
 

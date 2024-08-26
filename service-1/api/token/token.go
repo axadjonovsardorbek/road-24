@@ -23,7 +23,7 @@ func GenerateJWTToken(userID string, username string, role string, is_admin stri
 	refreshToken := jwt.New(jwt.SigningMethodHS256)
 
 	claims := accessToken.Claims.(jwt.MapClaims)
-	claims["id"] = userID
+	claims["user_id"] = userID
 	claims["username"] = username
 	claims["role"] = role
 	claims["is_admin"] = is_admin
@@ -35,7 +35,7 @@ func GenerateJWTToken(userID string, username string, role string, is_admin stri
 	}
 
 	rftClaims := refreshToken.Claims.(jwt.MapClaims)
-	claims["id"] = userID
+	claims["user_id"] = userID
 	claims["username"] = username
 	claims["role"] = role
 	claims["is_admin"] = is_admin
