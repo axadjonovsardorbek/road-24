@@ -374,7 +374,6 @@ paths:
       - description: Car ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -512,7 +511,6 @@ paths:
       - description: Car ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -546,7 +544,6 @@ paths:
       - description: Car ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -647,7 +644,6 @@ paths:
       - description: Car ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -681,7 +677,6 @@ paths:
       - description: Car ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -771,10 +766,9 @@ paths:
       - application/json
       description: Delete a service by ID
       parameters:
-      - description: DriverLicence ID
+      - description: Id
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -808,7 +802,6 @@ paths:
       - description: DriverLicence ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -909,7 +902,6 @@ paths:
       - description: Fine ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -1048,7 +1040,6 @@ paths:
       - description: Service ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -1178,7 +1169,6 @@ paths:
       - description: Service ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json
@@ -1212,7 +1202,6 @@ paths:
       - description: Service ID
         in: query
         name: id
-        required: true
         type: string
       produces:
       - application/json

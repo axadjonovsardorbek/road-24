@@ -62,7 +62,7 @@ func (h *Handler) LicenceCreate(c *gin.Context) {
 // @Tags licence
 // @Accept json
 // @Produce json
-// @Param id query string true "DriverLicence ID"
+// @Param id query string false "DriverLicence ID"
 // @Success 200 {object} cp.DriverLicenceGetByIdRes
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Server error"
@@ -168,7 +168,7 @@ func (h *Handler) LicenceGetAll(c *gin.Context) {
 // @Tags licence
 // @Accept json
 // @Produce json
-// @Param id query string true "DriverLicence ID"
+// @Param id query string false "Id"
 // @Success 200 {object} string "DriverLicence deleted"
 // @Failure 400 {object} string "Invalid provider ID"
 // @Failure 404 {object} string "DriverLicence not found"

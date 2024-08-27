@@ -209,13 +209,14 @@ func (r *FineRepo) Update(req *mp.FineUpdateReq) (*mp.Void, error) {
 	UPDATE
 		fines
 	SET 
-		payment_date = now()
 	`
 
 	var status_query string
 
 	var conditions []string
 	var args []interface{}
+
+	conditions = append(conditions, " payment_date = now()")
 
 
 	if req.Status != "" && req.Status != "string" {

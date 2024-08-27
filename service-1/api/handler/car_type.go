@@ -62,7 +62,7 @@ func (h *Handler) CarTypeCreate(c *gin.Context) {
 // @Tags car
 // @Accept json
 // @Produce json
-// @Param id query string true "Car ID"
+// @Param id query string false "Car ID"
 // @Success 200 {object} cp.CarTypeGetByIdRes
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Server error"
@@ -133,7 +133,7 @@ func (h *Handler) CarTypeGetAll(c *gin.Context) {
 // @Tags car
 // @Accept json
 // @Produce json
-// @Param id query string true "Car ID"
+// @Param id query string false "Car ID"
 // @Success 200 {object} string "Car deleted"
 // @Failure 400 {object} string "Invalid provider ID"
 // @Failure 404 {object} string "Car not found"

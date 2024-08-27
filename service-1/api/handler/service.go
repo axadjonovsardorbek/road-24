@@ -134,7 +134,7 @@ func (h *Handler) ServiceGetAll(c *gin.Context) {
 // @Tags service
 // @Accept json
 // @Produce json
-// @Param id query string true "Service ID"
+// @Param id query string false "Service ID"
 // @Success 200 {object} string "Service deleted"
 // @Failure 400 {object} string "Invalid provider ID"
 // @Failure 404 {object} string "Service not found"

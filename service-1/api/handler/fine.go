@@ -65,7 +65,7 @@ func (h *Handler) FineCreate(c *gin.Context) {
 // @Tags fine
 // @Accept json
 // @Produce json
-// @Param id query string true "Fine ID"
+// @Param id query string false "Fine ID"
 // @Success 200 {object} cp.FineGetByIdRes
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Server error"

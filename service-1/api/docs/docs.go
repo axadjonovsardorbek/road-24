@@ -266,8 +266,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Car ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -313,8 +312,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Car ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -467,8 +465,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Car ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -514,8 +511,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Car ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -615,8 +611,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Car ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -781,8 +776,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "DriverLicence ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -826,10 +820,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "DriverLicence ID",
+                        "description": "Id",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1054,8 +1047,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Fine ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1307,8 +1299,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Service ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1354,8 +1345,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Service ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1455,8 +1445,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Service ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
