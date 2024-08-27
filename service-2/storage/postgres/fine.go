@@ -209,19 +209,14 @@ func (r *FineRepo) Update(req *mp.FineUpdateReq) (*mp.Void, error) {
 	UPDATE
 		fines
 	SET 
+		payment_date = now()
 	`
 
 	var status_query string
-	var payment_query string
 
 	var conditions []string
 	var args []interface{}
 
-	if req.PaymentDate != "" && req.PaymentDate != "string" {
-		conditions = append(conditions, " payment_date = $"+strconv.Itoa(len(args)+1))
-		args = append(args, req.PaymentDate)
-		payment_query = " AND payment IS NULL"
-	}
 
 	if req.Status != "" && req.Status != "string" {
 		conditions = append(conditions, " status = $"+strconv.Itoa(len(args)+1))
@@ -236,7 +231,6 @@ func (r *FineRepo) Update(req *mp.FineUpdateReq) (*mp.Void, error) {
 	conditions = append(conditions, " updated_at = now()")
 	query += strings.Join(conditions, ", ")
 	query += " WHERE id = $" + strconv.Itoa(len(args)+1) + " AND deleted_at = 0"
-	query += payment_query 
 	query += status_query
 
 	args = append(args, req.Id)

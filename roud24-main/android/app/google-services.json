@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "511652510365",
+    "project_id": "roud24",
+    "storage_bucket": "roud24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511652510365:android:22350fe8607a70e2ae7274",
+        "android_client_info": {
+          "package_name": "com.example.roud24"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOp891tERg_zsxJC4ul3ziHWvCLk34_kM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

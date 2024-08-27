@@ -176,8 +176,6 @@ func (h *Handler) FineGetAll(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id query string false "Id"
-// @Param payment_date query string false "PaymentDate"
-// @Param status query string false "Status"
 // @Success 200 {object} string "Fine updated"
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 404 {object} string "Service not found"
@@ -200,8 +198,6 @@ func (h *Handler) FineUpdate(c *gin.Context) {
 
 	req := cp.FineUpdateReq{
 		Id:          c.Query("id"),
-		PaymentDate: c.Query("payment_date"),
-		Status:      c.Query("status"),
 	}
 
 	if role == "driver" {

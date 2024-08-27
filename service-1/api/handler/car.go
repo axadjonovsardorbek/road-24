@@ -66,7 +66,7 @@ func (h *Handler) CarCreate(c *gin.Context) {
 // @Tags car
 // @Accept json
 // @Produce json
-// @Param id query string true "Car ID"
+// @Param id query string false "Car ID"
 // @Success 200 {object} cp.CarGetByIdRes
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Server error"

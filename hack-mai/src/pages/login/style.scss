@@ -1,0 +1,44 @@
+.login-page {
+    height: 100vh;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-form {
+    max-width: 350px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .site-form-item-icon {
+    color: rgba(0, 0, 0, 0.25);
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .login-form-forgot {
+    float: right;
+  }
+  
+  .login-form-button {
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  
+  .login-form-button:hover {
+    background-color: #1890ff;
+    border-color: #1890ff;
+  }
+  
+  .login-form-button:active {
+    background-color: #096dd9;
+    border-color: #096dd9;
+  }

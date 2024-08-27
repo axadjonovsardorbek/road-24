@@ -1,0 +1,67 @@
+.layout {
+    height: 100vh;
+
+    &__menu {
+        height: 75vh;
+        overflow-y: auto;
+    }
+}
+
+.content {
+    margin: 15px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 12px;
+    height: 100%;
+    overflow: hidden;
+    position: relative !important;
+}
+
+.header {
+    padding: 0 20px;
+    background-color: #001529;
+}
+
+
+thead {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+}
+
+.ant-table-content {
+    position: relative;
+}
+
+.sidebar {
+    overflow-y: auto;
+    margin: 0;
+}
+
+.logo-block {
+    background-color: #001529;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logo {
+    color: #000;
+    font-size: 24px;
+}
+
+.logo-title {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.sidebar_menu {
+    height: 100%;
+    background-color: #001529 !important;
+}
+
+.ant-layout-sider-children {
+    background-color: #001529;
+    color: #000;
+}

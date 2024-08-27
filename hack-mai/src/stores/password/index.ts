@@ -1,0 +1,1 @@
+export { useUserPasswordStore } from './password'

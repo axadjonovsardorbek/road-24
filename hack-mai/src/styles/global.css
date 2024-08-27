@@ -1,0 +1,86 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 11px !important;
+}
+
+.ant-table table {
+  font-size: 11px;
+}
+
+.ant-table-cell {
+  padding: 6px !important;
+}
+
+.ant-select {
+  font-size: 11px !important;
+}
+
+.ant-select-selector {
+  font-size: 11px !important;
+  padding: 0 6px !important;
+}
+
+.ant-tree-node-content-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.anticon-download {
+  margin: 0 !important;
+}
+
+.anticon-edit {
+  margin: 0 !important;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}
+
+.ant-drawer-body,
+.ant-drawer-header {
+  padding: 15px !important;
+}
+
+.ant-drawer-body {
+  padding-bottom: 25px;
+}
+
+.ant-progress-inner {
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 11px !important
+}
+
+.ant-statistic-content{
+  font-size: 14px !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3598f4;
+  border-radius: 10px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1677FF;
+  border-radius: 10px;
+}
+
+.brandTable {
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.red-row {
+  background-color: #f8d7da;
+}

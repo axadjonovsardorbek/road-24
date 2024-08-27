@@ -1,0 +1,69 @@
+name: roud24
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  bloc_concurrency: ^0.2.5
+
+  firebase_core: ^3.3.0
+  firebase_auth: ^5.1.4
+  firebase_storage: ^12.1.3
+  cloud_firestore: ^5.2.1
+  flutter_svg: ^2.0.10+1
+  get_it: ^7.7.0
+
+  easy_localization: ^3.0.7
+  zoom_tap_animation: ^1.1.0
+  cached_network_image: ^3.3.1
+  flutter_widget_from_html: ^0.15.1
+  image_picker: ^1.1.2
+  path_provider: ^2.1.4
+  shimmer: ^3.0.0
+  curved_navigation_bar: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^4.0.0
+
+
+flutter:
+
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/translation/
+    - assets/images/
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package

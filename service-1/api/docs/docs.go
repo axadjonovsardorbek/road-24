@@ -569,8 +569,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Car ID",
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1001,18 +1000,6 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Id",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "PaymentDate",
-                        "name": "payment_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Status",
-                        "name": "status",
                         "in": "query"
                     }
                 ],
